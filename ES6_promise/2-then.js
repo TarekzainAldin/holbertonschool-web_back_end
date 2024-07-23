@@ -1,12 +1,5 @@
 export default function handleResponseFromAPI(promise) {
-  return promise.then(() => ({ statuse: 200, body: 'succes' }))
+  return promise.then(() => ({ status: 200, body: 'success' }))
     .catch(() => Error())
-    .finally(() => console.warn('got a response from the api '));
+    .finally(() => console.warn('Got a response from the API'));
 }
-
-// export default function handleResponseFromAPI(promise)
-// {
-//     return promise.then(() => ({status:200, body :'success'}))
-//     .catch(() => Error())
-//     .finally(()=> console.warn('Got a response from the API'));
-// }
