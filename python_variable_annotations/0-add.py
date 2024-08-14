@@ -1,5 +1,7 @@
-#!/usr/bin/python3
-"""this is the commint"""
+#!/usr/bin/env python3
+"""contient ma méthode d'addition"""
+
+
 def add(a: float, b: float) -> float:
-    """make also somecommint"""
+    """retourn un float qui est l'additionne deux float passés en paramètre"""
     return a + b
