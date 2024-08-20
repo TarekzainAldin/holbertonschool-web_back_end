@@ -50,4 +50,3 @@ class Server:
             return []
 
         return dataset[start:stop]
-    
