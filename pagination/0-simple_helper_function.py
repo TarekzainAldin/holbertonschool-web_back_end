@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contient la fonction index_range."""
+"""Contient la fonction ."""
 
 
 def index_range(page, page_size):
