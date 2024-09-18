@@ -1,7 +1,6 @@
 function displayMessage(message) {
-    console.log(message);
-  }
-  
-  // Export the function
-  export default displayMessage;
-  
+  console.log(message);
+}
+
+// eslint-disable-next-line no-undef
+module.exports = displayMessage;
