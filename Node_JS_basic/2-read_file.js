@@ -1,19 +1,28 @@
+#!/usr/bin/env node
+/* eslint-disable no-unused-vars */
+
+// eslint-disable-next-line no-undef
 const fs = require('fs');
 
 function countStudents(path) {
   try {
+    // Check if the file exists before reading it
+    if (!fs.existsSync(path)) {
+      throw new Error('Cannot load the database');
+    }
+
     // Read the CSV file synchronously
     const data = fs.readFileSync(path, 'utf8');
 
     // Split the content into lines and remove empty lines
     const lines = data.trim().split('\n').filter(line => line.length > 0);
 
+    // Ensure the file has more than just the header row
     if (lines.length <= 1) {
-      throw new Error('Cannot load the database'); // No valid data in the file
+      throw new Error('Cannot load the database');
     }
 
     // Remove the header row (first line)
-    const header = lines[0].split(',');
     const studentData = lines.slice(1);
 
     const students = {};
@@ -23,7 +32,8 @@ function countStudents(path) {
     for (const line of studentData) {
       const [firstname, lastname, age, field] = line.split(',');
 
-      if (firstname && field) {  // Check that necessary fields are not empty
+      // Check that necessary fields are not empty
+      if (firstname && field) {
         if (!students[field]) {
           students[field] = [];
         }
