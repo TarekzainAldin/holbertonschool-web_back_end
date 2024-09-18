@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable no-undef */
+// eslint-disable-next-line no-undef
 const fs = require('fs');
 
 function countStudents(path) {
@@ -50,4 +50,5 @@ function countStudents(path) {
   }
 }
 
+// eslint-disable-next-line no-undef
 module.exports = countStudents;
