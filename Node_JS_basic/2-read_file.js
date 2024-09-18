@@ -23,7 +23,7 @@ function countStudents(path) {
 
     // Loop through each line and process student data
     for (const line of studentData) {
-      const [firstname, , , field] = line.split(',');
+      const [firstname, lastname, age, field] = line.split(',');
 
       // Check that necessary fields (firstname and field) are not empty
       if (firstname && field) {
