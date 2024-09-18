@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Display the initial message
 console.log('Welcome to Holberton School, what is your name?');
 
