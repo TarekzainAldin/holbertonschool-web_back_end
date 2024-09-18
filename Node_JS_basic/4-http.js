@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+// eslint-disable-next-line no-undef
 const { read } = require('fs');
 const http = require ('http');
 // create the http server and assign it to the 'app' vriable 
