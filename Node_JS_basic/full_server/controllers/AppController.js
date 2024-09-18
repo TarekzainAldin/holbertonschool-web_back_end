@@ -1,10 +1,14 @@
 /* eslint-disable no-undef */
-// full_server/controllers/AppController.js
+/**
+ * Contains the miscellaneous route handlers.
+ */
 
-export class AppController {
-    static getHomepage(req, res) {
-      return res.status(200).send('Hello Holberton School!');
+class AppController {
+    static getHomepage(request, response) {
+      response.status(200).send('Hello Holberton School!');
     }
   }
   
-module.exports = AppController;
+  export default AppController;
+  module.exports = AppController;
+  

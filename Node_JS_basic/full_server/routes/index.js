@@ -1,13 +1,18 @@
 /* eslint-disable no-undef */
-import { Router } from 'express';
-import { AppController } from '../controllers/AppController.js';
-import { StudentsController } from '../controllers/StudentsController.js';
+import AppController from '../controllers/AppController';
+import StudentsController from '../controllers/StudentsController';
 
-const router = Router();
+/**
+ * Binds the routes to the appropriate handler in the
+ * given Express application.
+ * @param {Express} app The Express application.
+ */
 
-router.get('/', AppController.getHomepage);
-router.get('/students', StudentsController.getAllStudents);
-router.get('/students/:major', StudentsController.getAllStudentsByMajor);
+const mapRoutes = (app) => {
+  app.get('/', AppController.getHomepage);
+  app.get('/students', StudentsController.getAllStudents);
+  app.get('/students/:major', StudentsController.getAllStudentsByMajor);
+};
 
-export default router;
-module.exports = router;
+export default mapRoutes;
+module.exports = mapRoutes;
