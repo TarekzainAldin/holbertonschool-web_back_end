@@ -1,80 +1,119 @@
+/* eslint-disable no-undef */
 const http = require('http');
-const fs = require('fs').promises;
-const url = require('url');
+const fs = require('fs');
 
-// Function to read and process the CSV file asynchronously
-function countStudents(path) {
-  return fs.readFile(path, 'utf8')
-    .then((data) => {
-      const lines = data.trim().split('\n').filter(line => line.length > 0);
+const PORT = 1245;
+const HOST = 'localhost';
+const app = http.createServer();
+const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
 
-      if (lines.length <= 1) {
-        throw new Error('Cannot load the database');
+/**
+ * Counts the students in a CSV data file.
+ * @param {String} dataPath The path to the CSV data file.
+ * @author Bezaleel Olakunori <https://github.com/B3zaleel>
+ */
+const countStudents = (dataPath) => new Promise((resolve, reject) => {
+  if (!dataPath) {
+    reject(new Error('Cannot load the database'));
+  }
+  if (dataPath) {
+    fs.readFile(dataPath, (err, data) => {
+      if (err) {
+        reject(new Error('Cannot load the database'));
       }
+      if (data) {
+        const reportParts = [];
+        const fileLines = data.toString('utf-8').trim().split('\n');
+        const studentGroups = {};
+        const dbFieldNames = fileLines[0].split(',');
+        const studentPropNames = dbFieldNames.slice(
+          0,
+          dbFieldNames.length - 1,
+        );
 
-      const studentData = lines.slice(1); // Skip header row
-      const students = {};
-      let totalStudents = 0;
-
-      studentData.forEach((line) => {
-        const [firstname, lastname, age, field] = line.split(',');
-
-        if (firstname && field) { // Ensure valid data
-          if (!students[field]) {
-            students[field] = [];
+        for (const line of fileLines.slice(1)) {
+          const studentRecord = line.split(',');
+          const studentPropValues = studentRecord.slice(
+            0,
+            studentRecord.length - 1,
+          );
+          const field = studentRecord[studentRecord.length - 1];
+          if (!Object.keys(studentGroups).includes(field)) {
+            studentGroups[field] = [];
           }
-          students[field].push(firstname);
-          totalStudents += 1;
+          const studentEntries = studentPropNames.map((propName, idx) => [
+            propName,
+            studentPropValues[idx],
+          ]);
+          studentGroups[field].push(Object.fromEntries(studentEntries));
         }
-      });
 
-      // Generate the result to be returned
-      let result = `Number of students: ${totalStudents}\n`;
-
-      for (const field in students) {
-        const listOfStudents = students[field].join(', ');
-        result += `Number of students in ${field}: ${students[field].length}. List: ${listOfStudents}\n`;
+        const totalStudents = Object.values(studentGroups).reduce(
+          (pre, cur) => (pre || []).length + cur.length,
+        );
+        reportParts.push(`Number of students: ${totalStudents}`);
+        for (const [field, group] of Object.entries(studentGroups)) {
+          reportParts.push([
+            `Number of students in ${field}: ${group.length}.`,
+            'List:',
+            group.map((student) => student.firstname).join(', '),
+          ].join(' '));
+        }
+        resolve(reportParts.join('\n'));
       }
-
-      return result.trim(); // Return the formatted result
-    })
-    .catch(() => {
-      throw new Error('Cannot load the database');
     });
-}
-
-// Create the HTTP server and assign it to the 'app' variable
-const app = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url, true);
-
-  if (parsedUrl.pathname === '/') {
-    // For the root endpoint "/"
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello Holberton School!');
-  } else if (parsedUrl.pathname === '/students') {
-    // For the "/students" endpoint
-    const databasePath = process.argv[2]; // Get the database path from command-line arguments
-
-    countStudents(databasePath)
-      .then((studentList) => {
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(`This is the list of our students\n${studentList}`);
-      })
-      .catch((err) => {
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end(err.message);
-      });
-  } else {
-    // For any other endpoint, return a 404
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('Not Found');
   }
 });
 
-// The server should listen on port 1245
-app.listen(1245, () => {
-  console.log('Server is running on port 1245');
+const SERVER_ROUTE_HANDLERS = [
+  {
+    route: '/',
+    handler(_, res) {
+      const responseText = 'Hello Holberton School!';
+
+      res.setHeader('Content-Type', 'text/plain');
+      res.setHeader('Content-Length', responseText.length);
+      res.statusCode = 200;
+      res.write(Buffer.from(responseText));
+    },
+  },
+  {
+    route: '/students',
+    handler(_, res) {
+      const responseParts = ['This is the list of our students'];
+
+      countStudents(DB_FILE)
+        .then((report) => {
+          responseParts.push(report);
+          const responseText = responseParts.join('\n');
+          res.setHeader('Content-Type', 'text/plain');
+          res.setHeader('Content-Length', responseText.length);
+          res.statusCode = 200;
+          res.write(Buffer.from(responseText));
+        })
+        .catch((err) => {
+          responseParts.push(err instanceof Error ? err.message : err.toString());
+          const responseText = responseParts.join('\n');
+          res.setHeader('Content-Type', 'text/plain');
+          res.setHeader('Content-Length', responseText.length);
+          res.statusCode = 200;
+          res.write(Buffer.from(responseText));
+        });
+    },
+  },
+];
+
+app.on('request', (req, res) => {
+  for (const routeHandler of SERVER_ROUTE_HANDLERS) {
+    if (routeHandler.route === req.url) {
+      routeHandler.handler(req, res);
+      break;
+    }
+  }
 });
 
-// Export the 'app' variable (the server)
+app.listen(PORT, HOST, () => {
+  process.stdout.write(`Server listening at -> http://${HOST}:${PORT}\n`);
+});
+
 module.exports = app;
