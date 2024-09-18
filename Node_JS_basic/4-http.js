@@ -1,21 +1,22 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-undef
-const { read } = require('fs');
-const http = require ('http');
-// create the http server and assign it to the 'app' vriable 
-const app = http.createServer((req, res ) => {
-    // set the response header for plain text 
-    res.writeHead(200, {'content-type':'test/plain'});
-    
+const http = require('http');
 
-    //wtrite the response message 
-     read.end('Hello Holberton School!');
+const PORT = 1245;
+const HOST = 'localhost';
+const app = http.createServer();
 
+app.on('request', (_, res) => {
+  const responseText = 'Hello Holberton School!';
+
+  res.setHeader('Content-Type', 'text/plain');
+  res.setHeader('Content-Length', responseText.length);
+  res.statusCode = 200;
+  res.write(Buffer.from(responseText));
 });
 
-// the server should listen on port 12345
-app.listen(12345,() => {
-    console.log('server is runing on port 12345')
+app.listen(PORT, HOST, () => {
+  process.stdout.write(`Server listening at -> http://${HOST}:${PORT}\n`);
 });
-// Export the 'app' variable (the server ) to be used elswhere 
-module.exports= app;
+
+module.exports = app;
