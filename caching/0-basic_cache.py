@@ -1,52 +1,19 @@
 #!/usr/bin/env python3
-"""Basic Caching"""
-BaseCaching = __import__('base_caching').BaseCaching
+""" BasicCache module """
+
+from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
-    """
-    -----------------
-    CLASS: BasicCache
-    -----------------
-    """
-
-    def __init__(self):
-        """
-        ----------------------
-        MAGIC METHOD: __init__
-        ----------------------
-        Description:
-                Initializes the current
-                class object
-        """
-        super().__init__()
+    """ BasicCache is a caching system without limit """
 
     def put(self, key, item):
-        """
-        -----------
-        METHOD: put
-        -----------
-        Description:
-                Adds to caching dictionary an item
-                provided a key
-        Args:
-                @key: key to add to the cache
-                @item: value to add to the cache
-        """
-        self.cache_data[key] = item
+        """ Add an item in the cache """
+        if key is not None and item is not None:
+            self.cache_data[key] = item
 
     def get(self, key):
-        """
-        -----------
-        METHOD: get
-        -----------
-        Description:
-                Given a key, returns the element
-                from cache_data if the key exists
-                in the cache_data dictionary.
-        Args:
-                @key: key to look for in cache
-        """
-        if not key or key not in self.cache_data:
-            return None
-        return self.cache_data[key]
+        """ Get an item by key """
+        if key is not None:
+            return self.cache_data.get(key)
+        return None
