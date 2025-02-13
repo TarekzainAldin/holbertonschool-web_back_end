@@ -5,7 +5,9 @@ Module for filtering and obfuscating log messages.
 import logging
 import re
 from typing import List, Tuple
-
+import mysql
+from mysql.connector import Error
+import os
 
 def filter_datum(
     fields: List[str],
@@ -71,6 +73,66 @@ def get_logger() -> logging.Logger:
     return logger
 
 
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """
+    Connect to the MySQL database using credentials from environment variables.
+
+    Returns:
+        mysql.connector.connection.MySQLConnection: Database connector object.
+    """
+    # Get credentials from environment variables
+    username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "1")
+    host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    db_name = os.getenv("PERSONAL_DATA_DB_NAME")
+
+    # Connect to the database
+    try:
+        db = mysql.connector.connect(
+            user=username,
+            password=password,
+            host=host,
+            database=db_name
+        )
+        return db
+    except mysql.connector.Error as err:
+        print(f"Error connecting to MySQL: {err}")
+        raise
+
+
+def main():
+    """
+    Main function to retrieve data from the users table and log it securely.
+    """
+    # Configure logger
+    logger = get_logger()
+
+    # Connect to database
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        # Retrieve all rows from users table
+        cursor.execute("SELECT * FROM users")
+        rows = cursor.fetchall()
+
+        # Log each row securely
+        for row in rows:
+            # Construct the log message
+            log_message = "; ".join(
+                [f"{field}={value}" for field, value in zip(
+                    cursor.column_names, row)])
+            log_message += ";"  # Add semicolon at the end
+            logger.info(log_message)
+
+    except mysql.connector.Error as err:
+        logger.error(f"Error fetching data from MySQL: {err}")
+
+    finally:
+        # Clean up resources
+        cursor.close()
+        db.close()
+
+
 if __name__ == "__main__":
-    import sys
-    print(filter_datum(["password"], "***", "user=admin;password=secret", ";"))
+    main()
