@@ -9,6 +9,7 @@ import mysql
 from mysql.connector import Error
 import os
 
+
 def filter_datum(
     fields: List[str],
     redaction: str,
