@@ -1,22 +1,17 @@
-#!/usr/bin/env python3
-""" Session Auth views """
 from flask import jsonify, request, abort
-from api.v1.views import app_views
+from api.v1.views import app_views  # ✅ Ensure you're using the existing app_views
 from models.user import User
 from api.v1.app import auth
 import os
-from typing import Dict
-
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
-def auth_session_login() -> Dict:
+def auth_session_login():
     """ POST /auth_session/login """
     email = request.form.get('email')
     password = request.form.get('password')
 
     if not email:
         return jsonify({"error": "email missing"}), 400
-
     if not password:
         return jsonify({"error": "password missing"}), 400
 
