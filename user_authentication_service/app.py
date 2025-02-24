@@ -1,20 +1,22 @@
-#!/usr/bin/python3
-"""Route model for the API"""
-
+#!/usr/bin/env python3
+""" Route module for the API """
 from flask import Flask, jsonify, request, abort, redirect, url_for
 from sqlalchemy.orm.exc import NoResultFound
 
 from auth import Auth
 
+
 app = Flask(__name__)
+AUTH = Auth()
 
 
-@app.route("/", methods=["GET"])
-def index():
+@app.route('/', methods=['GET'], strict_slashes=False)
+def index() -> str:
+    """ GET /
+    Return:
+      - JSON payload
     """
-    Simple GET route that returns a welcome message.
-    """
-    return jsonify({"message": "Bienvenue"}), 200
+    return jsonify({"message": "Bienvenue"})
 
 
 if __name__ == "__main__":
