@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 from db import DB
 from user import User
-
-from bcrypt import hashpw, gensalt, checkpw
+import bcrypt
+from bcrypt import hashpw, gensalt
 from sqlalchemy.orm.exc import NoResultFound
 
 
 
-def _hash_password(password: str) -> str:
-    """ Takes in string arg, converts to unicode
-    Returns salted, hashed pswd as bytestring
-    """
-    return hashpw(password.encode('utf-8'), gensalt())
+def _hash_password(password: str) -> bytes:
+    """Hash a password with bcrypt and return the hashed password as bytes."""
+    salt = bcrypt.gensalt()  # Generate a salt
+    hashed_password = bcrypt.hashpw(password.encode(), salt)  # Hash the password
+    return hashed_password
