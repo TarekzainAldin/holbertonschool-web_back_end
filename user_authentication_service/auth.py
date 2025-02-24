@@ -1,19 +1,20 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+"""Auth module
+"""
+import bcrypt
 from db import DB
 from user import User
-import bcrypt
-from bcrypt import hashpw, gensalt
 from sqlalchemy.orm.exc import NoResultFound
-from uuid import uuid4
+import uuid
+
 
 def _hash_password(password: str) -> bytes:
-    """Hash a password with bcrypt and return the hashed password as bytes."""
+    """Hash a password string using bcrypt and return the salted hash"""
     salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password.encode(), salt)  # Hash the password
-    return hashed_password
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed
+
 
 def _generate_uuid() -> str:
-    """ Generates UUID
-    Returns string representation of new UUID
-    """
-    return str(uuid4())
+    """Generate a string representation of a new UUID."""
+    return str(uuid.uuid4())
