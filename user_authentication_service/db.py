@@ -39,7 +39,7 @@ class DB:
         return new_user
 
 
-   def find_user_by(self, **kwargs) -> User:
+    def find_user_by(self, **kwargs) -> User:
         """ Returns first row found in users table based on keyword args """
 
         """ Handle invalid requests """
