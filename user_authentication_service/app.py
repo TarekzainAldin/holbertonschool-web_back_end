@@ -9,13 +9,12 @@ from auth import Auth
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET'], strict_slashes=False)
-def index() -> str:
-    """ GET /
-    Return:
-      - JSON payload
+@app.route("/", methods=["GET"])
+def index():
     """
-    return jsonify({"message": "Bienvenue"})
+    Simple GET route that returns a welcome message.
+    """
+    return jsonify({"message": "Bienvenue"}), 200
 
 
 if __name__ == "__main__":
