@@ -82,21 +82,27 @@ def login() -> str:
             return response
 
     @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
-    def logout() -> str:
-        """Logout method to destroy a session"""
-        session_id = request.cookies.get('session_id')
+    def logout():
+        """ Logs out the user by deleting thei
+        r `session_id` from the database
+        """
 
+        #  Retrieve `session_id` from cookies
+        session_id = request.cookies.get("session_id")
         if not session_id:
-            abort(403)
+         return jsonify({"error": "Forbidden"}), 403
 
-        try:
-            user = AUTH.get_user_from_session_id(session_id)
-            if not user:
-                raise ValueError("User not found")
-            AUTH.destroy_session(user.id)
-            return redirect('/'), 302
-        except ValueError:
-            abort(403)
+        # Find the user with the given `session_id`
+        user = AUTH.get_user_by_session_id(session_id)
+
+        if not user:
+            return jsonify({"error": "Forbidden"}), 403
+
+        #  Remove the session for the user
+        AUTH.destroy_session(user.id)
+
+        #  Redirect the user to the homepage
+        return redirect(url_for("/"))
 
 
 if __name__ == "__main__":
