@@ -84,15 +84,13 @@ class Auth:
             return None
 
     def get_reset_password_token(self, email: str) -> str:
-        """ 
-        Finds user by email, updates user's reset_token with UUID, and returns the token.
-        
+        """
+        Finds user by email, updates user's
+          reset_token with UUID, and returns the token.
         Args:
             email (str): The email of the user requesting a password reset.
-        
         Returns:
             str: The newly generated reset token.
-
         Raises:
             ValueError: If no user with the given email is found.
         """
