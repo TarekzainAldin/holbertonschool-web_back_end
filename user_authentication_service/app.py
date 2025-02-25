@@ -10,7 +10,7 @@ app = Flask(__name__)
 AUTH = Auth()
 
 
-@app.route('/', methods=['GET'], strict_slashes=False)
+@app.route("/", methods=["GET"])
 def index() -> str:
     """ GET /
     Return:
