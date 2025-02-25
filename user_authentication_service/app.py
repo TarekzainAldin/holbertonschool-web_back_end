@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ Route module for the API """
-from flask import Flask, jsonify, request, abort, redirect, url_for
+from flask import Flask, jsonify, request, abort, redirect, url_for, Response
 from sqlalchemy.orm.exc import NoResultFound
 
 from auth import Auth
@@ -81,21 +81,44 @@ def login() -> str:
 
             return response
 
-    @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
-    def logout() -> None:
-        """ DELETE /sessions
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> Response:
+    """ DELETE /sessions
         Destroys session by finding session_id (key in cookie)
-        Return:
-        - Redirects user to status route (GET /)
-        """
-        session_id = request.cookies.get('session_id')
-        if session_id:
+        Returns:
+        - Redirects user to status route (GET /) if successful
+        - 403 Forbidden if session is invalid
+    """
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user:
+            AUTH.destroy_session(user.id)
+            return redirect(url_for('index'))
+
+    abort(403, description="Invalid session.")
+
+
+@app.route('/profile', methods=['GET'], strict_slashes=False)
+def profile() -> str:
+    """ GET /profile
+    Finds user's info by finding session_id (key in cookie)
+    Return:
+      - JSON payload
+    """
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        try:
             user = AUTH.get_user_from_session_id(session_id)
             if user:
-                AUTH.destroy_session(user.id)
-                return redirect(url_for('index'))
-        else:
+                return jsonify({"email": user.email}), 200
+            else:
+                abort(403)
+        except NoResultFound:
             abort(403)
+    else:
+        abort(403)
 
 
 if __name__ == "__main__":
