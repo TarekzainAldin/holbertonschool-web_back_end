@@ -82,27 +82,20 @@ def login() -> str:
             return response
 
     @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
-    def logout():
-        """ Logs out the user by deleting thei
-        r `session_id` from the database
+    def logout() -> None:
+        """ DELETE /sessions
+        Destroys session by finding session_id (key in cookie)
+        Return:
+        - Redirects user to status route (GET /)
         """
-
-        #  Retrieve `session_id` from cookies
-        session_id = request.cookies.get("session_id")
-        if not session_id:
-         return jsonify({"error": "Forbidden"}), 403
-
-        # Find the user with the given `session_id`
-        user = AUTH.get_user_by_session_id(session_id)
-
-        if not user:
-            return jsonify({"error": "Forbidden"}), 403
-
-        #  Remove the session for the user
-        AUTH.destroy_session(user.id)
-
-        #  Redirect the user to the homepage
-        return redirect(url_for("/"))
+        session_id = request.cookies.get('session_id')
+        if session_id:
+            user = AUTH.get_user_from_session_id(session_id)
+            if user:
+                AUTH.destroy_session(user.id)
+                return redirect(url_for('index'))
+        else:
+            abort(403)
 
 
 if __name__ == "__main__":
