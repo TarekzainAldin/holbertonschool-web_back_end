@@ -123,32 +123,6 @@ def profile() -> str:
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)
 def get_reset_password_token() -> str:
-    """ POST /reset_password
-    Generates pswd reset token
-    Email field in x-www-form-urlencoded request
-    Return:
-      - JSON payload
-    """
-    form_data = request.form
-
-    if "email" not in form_data:
-        return jsonify({"message": "email required"}), 400
-    else:
-
-        email = request.form.get("email")
-
-        try:
-            reset_token = AUTH.get_reset_password_token(email)
-            return jsonify({
-                "email": email,
-                "reset_token": reset_token
-            }), 200
-        except ValueError:
-            abort(403)
-
-
-@app.route('/reset_password', methods=['POST'], strict_slashes=False)
-def get_reset_password_token() -> str:
     """Get reset password token method to generate a token for resetting
         the password
     """
