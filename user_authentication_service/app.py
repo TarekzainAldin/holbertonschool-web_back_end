@@ -169,34 +169,38 @@ def get_reset_password_token() -> str:
 
 @app.route('/reset_password', methods=['PUT'], strict_slashes=False)
 def update_password() -> str:
-    """ PUT /reset_password
-    Updates user password
-    Email, reset_token and new_password fields in x-www-form-urlencoded request
-    Return:
-      - JSON payload
+    """PUT /reset_password
+    Updates user password.
+    Expected form data:
+      - email
+      - reset_token
+      - new_password
+    Returns:
+      - 400 if required fields are missing
+      - 403 if reset_token is invalid
+      - 200 if password update is successful
     """
     form_data = request.form
 
-    if "email" not in form_data:
-        return jsonify({"message": "email required"}), 400
-    if "reset_token" not in form_data:
-        return jsonify({"message": "reset_token required"}), 400
-    if "new_password" not in form_data:
-        return jsonify({"message": "new_password required"}), 400
-    else:
+    # Validate required fields
+    required_fields = ["email", "reset_token", "new_password"]
+    for field in required_fields:
+        if field not in form_data:
+            return jsonify({"message": f"{field} required"}), 400
 
-        email = request.form.get("email")
-        reset_token = request.form.get("reset_token")
-        new_pswd = request.form.get("new_password")
+    # Extract form data
+    email = form_data.get("email")
+    reset_token = form_data.get("reset_token")
+    new_password = form_data.get("new_password")
 
-        try:
-            AUTH.update_password(reset_token, new_pswd)
-            return jsonify({
-                "email": email,
-                "message": "Password updated"
-            }), 200
-        except ValueError:
-            abort(403)
+    try:
+        AUTH.update_password(reset_token, new_password)
+        return jsonify({
+            "email": email,
+            "message": "Password updated"
+        }), 200
+    except ValueError:
+        abort(403)
 
 
 if __name__ == "__main__":
