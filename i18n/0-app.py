@@ -1,14 +1,14 @@
-#!/usr/bin/python
-"""api flask basic """
-
+#!/usr/bin/env python3
+"""API Basic Flask app"""
 from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
-    """render template for index html """
+    """Return 0-index.html"""
     return render_template('0-index.html')
 
 
