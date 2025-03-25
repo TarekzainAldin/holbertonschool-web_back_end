@@ -1,4 +1,3 @@
-// utils.js
 const Utils = {
   calculateNumber(type, a, b) {
     const roundedA = Math.round(a);
@@ -17,4 +16,4 @@ const Utils = {
   }
 };
 
-export default Utils;
+module.exports = Utils;
