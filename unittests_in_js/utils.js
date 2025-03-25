@@ -1,24 +1,22 @@
 const Utils = {
     calculateNumber(type, a, b) {
-    const numA = Number(a);
-    const numB = Number(b);
+      const roundedA = Math.round(a);
+      const roundedB = Math.round(b);
   
-    if (Number.isNaN(numA) || Number.isNaN(numB))
-    throw TypeError;
-  
-    if (type === 'SUM') {
-      return (Math.round(numA) + Math.round(numB));
-    } else if (type === 'SUBTRACT') {
-      return (Math.round(numA) - Math.round(numB));
-    } else if (type === 'DIVIDE') {
-        if (Math.round(numB) === 0) {
-          return ('Error');
-        }
-        return (Math.round(numA) / Math.round(numB));
-    } else {
-      throw TypeError;
+      switch (type) {
+        case 'SUM':
+          return roundedA + roundedB;
+        case 'SUBTRACT':
+          return roundedA - roundedB;
+        case 'DIVIDE':
+          if (roundedB === 0) {
+            return 'Error';
+          }
+          return roundedA / roundedB;
+        default:
+          throw new Error('Invalid type');
+      }
     }
-  }
-};
-
-module.exports = Utils;
+  };
+  
+  module.exports = Utils;

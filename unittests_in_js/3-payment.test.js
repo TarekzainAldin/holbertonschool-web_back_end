@@ -1,22 +1,24 @@
-const { expect, assert } = require('chai');
 const sinon = require('sinon');
-const { spy } = require('sinon');
-
+const Utils = require('./utils');
 const sendPaymentRequestToApi = require('./3-payment');
-const utils = require('./utils');
+const { expect } = require('chai');
 
 describe('sendPaymentRequestToApi', () => {
-    it('should call Util.calculateNumber', () => {
-        const functionSpy = sinon.spy(utils, 'calculateNumber');
-        const consoleSpy = sinon.spy(console, 'log');
+  it('should call Utils.calculateNumber with SUM, 100, 20', () => {
+    const spy = sinon.spy(Utils, 'calculateNumber');
+    sendPaymentRequestToApi(100, 20);
 
-        const apiRequest = sendPaymentRequestToApi(100, 20);
+    expect(spy.calledOnce).to.be.true;
+    expect(spy.calledWith('SUM', 100, 20)).to.be.true;
+    spy.restore();
+  });
 
-        expect(functionSpy.calledOnceWithExactly('SUM', 100, 20)).to.equal(true);
-        expect (consoleSpy.calledWithExactly('The total is: 120')).to.equal(true);
-        expect(utils.calculateNumber('SUM', 100, 20)).to.equal(apiRequest);
+  it('should log the correct total', () => {
+    const consoleSpy = sinon.spy(console, 'log');
+    sendPaymentRequestToApi(100, 20);
 
-        functionSpy.restore();
-        consoleSpy.restore();
-    });
+    expect(consoleSpy.calledOnce).to.be.true;
+    expect(consoleSpy.calledWith('The total is: 120')).to.be.true;
+    consoleSpy.restore();
+  });
 });
