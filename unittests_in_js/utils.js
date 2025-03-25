@@ -1,15 +1,9 @@
 const Utils = {
-    calculateNumber(type, a, b) {
-      const numA = Math.round(a);
-      const numB = Math.round(b);
-  
-      if (type === 'SUM') return numA + numB;
-      if (type === 'SUBTRACT') return numA - numB;
-      if (type === 'DIVIDE') return numB === 0 ? 'Error' : numA / numB;
-  
-      throw new TypeError('Invalid operation type');
+    calculateNumber (type, a, b) {
+      if (type === 'SUM') return Math.round(a) + Math.round(b);
+      if (type === 'SUBTRACT') return Math.round(a) - Math.round(b);
+      if (type === 'DIVIDE') return Math.round(b) !== 0 ? Math.round(a) / Math.round(b) : 'Error';
     }
   };
   
-  export default Utils;
-  
+  module.exports = Utils;
