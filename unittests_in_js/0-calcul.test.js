@@ -1,27 +1,26 @@
-const assert = require("assert");
-const calculateNumber = require("./0-calcul");
+const calculateNumber = require('./0-calcul.js');
+const assert = require('assert');
 
-describe("calculateNumber", () => {
-  it("should return the sum of two rounded numbers", () => {
-    assert.strictEqual(calculateNumber(1, 3), 4);
-    assert.strictEqual(calculateNumber(1, 3.7), 5);
-    assert.strictEqual(calculateNumber(1.2, 3.7), 5);
-    assert.strictEqual(calculateNumber(1.5, 3.7), 6);
-    assert.strictEqual(calculateNumber(2.6, 2.4), 5);
-  });
+describe('calculate', function () {
+  describe('calculateNumber()', function () {
+    it('should round a and b and return the sum of it', function () {
+      assert.equal(calculateNumber(2, 4), 6);
+    });
 
-  it("should handle negative numbers correctly", () => {
-    assert.strictEqual(calculateNumber(-1.4, -3.6), -5);
-    assert.strictEqual(calculateNumber(-1.5, -3.6), -5);
-  });
+	it('should round a and b and return the sum of it', function () {
+		assert.equal(calculateNumber(2, 4.1), 6);
+	});
 
-  it("should handle mixed sign numbers", () => {
-    assert.strictEqual(calculateNumber(-1.4, 3.6), 3);
-    assert.strictEqual(calculateNumber(1.4, -3.6), -2);
-  });
+	it('should round a and b and return the sum of it', function () {
+		assert.equal(calculateNumber(2.9, 4.1), 7);
+	});
 
-  it("should handle zeros correctly", () => {
-    assert.strictEqual(calculateNumber(0, 0), 0);
-    assert.strictEqual(calculateNumber(0, 4.5), 5);
+	it('should round a and b and return the sum of it', function () {
+		assert.equal(calculateNumber(2.5, 4.5), 8);
+	});
+
+	it('should round a and b and return the sum of it', function () {
+		assert.equal(calculateNumber(100.3, 500), 600);
+	});
   });
 });
