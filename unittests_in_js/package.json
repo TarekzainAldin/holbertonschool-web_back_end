@@ -1,5 +1,12 @@
 {
+  "name": "task_0",
+  "version": "1.0.0",
+  "description": "Unit tests in JavaScript using Mocha",
+  "main": "0-calcul.js",
+  "scripts": {
+    "test": "mocha '*.test.js'"
+  },
   "devDependencies": {
-    "mocha": "^11.1.0"
+    "mocha": "^10.0.0"
   }
 }
