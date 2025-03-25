@@ -1,9 +1,8 @@
-const { util } = require('chai');
-const sendPaymentRequestToApi = require('./3-payment');
-const Utils = require('./utils');
-const { utils } = require('mocha');
-
-function sendPaymentRequestToApi(totalAmount, totalShipping){
-    const sum = Utils.calculateNumber('SUM', totalAmount, totalShipping)
-    console.log(`The total is : ${sum}`)
-}
+function getPaymentTokenFromAPI(success) {
+    if (success) {
+      return Promise.resolve({ data: 'Successful response from the API' });
+    }
+    // Returns undefined when success is false
+  }
+  
+  module.exports = getPaymentTokenFromAPI;
