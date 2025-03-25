@@ -1,79 +1,31 @@
-// 2-calcul_chai.test.js
-import { calculateNumber } from './2-calcul_chai.js';
-import { expect } from 'chai';
+const calculateNumber = require("./2-calcul_chai.js");
+const { expect } = require('chai');
 
-describe('calculate', function () {
-  describe('calculateNumber(SUM)', function () {
-    it('should round a and b and return the sum of it', function () {
-      expect(calculateNumber("SUM", 2, 4)).to.equal(6);
+describe('calculateNumber', () => {
+    it('returns rounded sum with SUM', () => {
+    expect(calculateNumber('SUM', 1, 3)).to.equal(4);
+    expect(calculateNumber('SUM', 1.6, 3)).to.equal(5);
+    expect(calculateNumber('SUM', 1.2, 3.8)).to.equal(5);
+    expect(calculateNumber('SUM', -1, -3)).to.equal(-4);
+    expect(calculateNumber('SUM',-1.4, -3.6)).to.equal(-5);
     });
-
-    it('should round a and b and return the sum of it', function () {
-      expect(calculateNumber("SUM", 2, 4.1)).to.equal(6);
+    it('returns rounded sum with SUBTRACT', () => {
+        expect(calculateNumber('SUBTRACT',1, 3)).to.equal(-2);
+        expect(calculateNumber('SUBTRACT', 1.6, 3)).to.equal(-1);
+        expect(calculateNumber('SUBTRACT', 1.2, 3.8)).to.equal(-3);
+        expect(calculateNumber('SUBTRACT', -1, -3)).to.equal(2);
+        expect(calculateNumber('SUBTRACT',-1.4, -3.6)).to.equal(3);
     });
-
-    it('should round a and b and return the sum of it', function () {
-      expect(calculateNumber("SUM", 2.9, 4.1)).to.equal(7);
+    it('returns rounded sum with DIVIDE', () => {
+        expect(calculateNumber('DIVIDE', 1.4, 4.5)).to.equal(0.2);
     });
-
-    it('should round a and b and return the sum of it', function () {
-      expect(calculateNumber("SUM", 2.5, 4.5)).to.equal(8);
+    it('returns error string when DIVIDE by 0', () => {
+        expect(calculateNumber('DIVIDE', 1.4, 0)).to.equal('Error');
     });
-
-    it('should round a and b and return the sum of it', function () {
-      expect(calculateNumber("SUM", 100.3, 500)).to.equal(600);
+    it('should throw error if NaN passed', function () {
+        expect(() => calculateNumber('SUM', NaN, 3)).to.throw();
     });
-  });
-
-  describe('calculateNumber(SUBTRACT)', function () {
-    it('should round the two numbers, and subtract b from a', function () {
-      expect(calculateNumber("SUBTRACT", 10, 4)).to.equal(6);
+    it('should throw error if invalid type', function () {
+        expect(() => calculateNumber('blah', 2, 3)).to.throw();
     });
-
-    it('should round the two numbers, and subtract b from a', function () {
-      expect(calculateNumber("SUBTRACT", 10, 4.1)).to.equal(6);
-    });
-
-    it('should round the two numbers, and subtract b from a', function () {
-      expect(calculateNumber("SUBTRACT", 7.9, 4.1)).to.equal(4);
-    });
-
-    it('should round the two numbers, and subtract b from a', function () {
-      expect(calculateNumber("SUBTRACT", 8.5, 4.5)).to.equal(4);
-    });
-
-    it('should round the two numbers, and subtract b from a', function () {
-      expect(calculateNumber("SUBTRACT", 600.3, 500)).to.equal(100);
-    });
-  });
-
-  describe('calculateNumber(DIVIDE)', function () {
-    it('should round the two numbers, and divide a with b', function () {
-      expect(calculateNumber("DIVIDE", 10, 2)).to.equal(5);
-    });
-
-    it('should round the two numbers, and divide a with b', function () {
-      expect(calculateNumber("DIVIDE", 10, 2.1)).to.equal(5);
-    });
-
-    it('should round the two numbers, and divide a with b', function () {
-      expect(calculateNumber("DIVIDE", 7.9, 4.1)).to.equal(2);
-    });
-
-    it('should round the two numbers, and divide a with b', function () {
-      expect(calculateNumber("DIVIDE", 9.5, 1.5)).to.equal(5);
-    });
-
-    it('should round the two numbers, and divide a with b', function () {
-      expect(calculateNumber("DIVIDE", 600.3, 100)).to.equal(6);
-    });
-
-    it('should round the two numbers, and divide a with b', function () {
-      expect(calculateNumber("DIVIDE", 10, 3)).to.equal(3.3333333333333335);
-    });
-
-    it('should return the string Error if the rounded value of b is equal to 0', function () {
-      expect(calculateNumber("DIVIDE", 6, 0.2)).to.equal("Error");
-    });
-  });
 });
