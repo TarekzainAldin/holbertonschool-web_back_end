@@ -19,4 +19,3 @@ export default function calculateNumber(type, a, b) {
 	  throw TypeError;
 	}
   }
-  
