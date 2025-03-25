@@ -1,20 +1,20 @@
-function calculateNumber(type, a, b)
-{
-	number_1 = Math.round(a)
-	number_2 = Math.round(b)
-	if (type == "SUM") {
-		return ((number_1 + number_2));
-}
-	if (type == "SUBTRACT") {
-		return ((number_1 - number_2));
-}
-	if (type == "DIVIDE") {
-		if (number_2 == 0) {
-			return "Error"
+module.exports = function calculateNumber(type, a, b) {
+	const numA = Number(a);
+	const numB = Number(b);
+  
+	if (Number.isNaN(numA) || Number.isNaN(numB))
+	throw TypeError;
+  
+	if (type === 'SUM') {
+	  return (Math.round(numA) + Math.round(numB));
+	} else if (type === 'SUBTRACT') {
+	  return (Math.round(numA) - Math.round(numB));
+	} else if (type === 'DIVIDE') {
+		if (Math.round(numB) === 0) {
+		  return ('Error');
 		}
-		return ((number_1 / number_2));
-}
-
-}
-
-module.exports = calculateNumber;
+		return (Math.round(numA) / Math.round(numB));
+	} else {
+	  throw TypeError;
+	}
+  }
