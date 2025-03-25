@@ -1,8 +1,10 @@
-import Utils from './utils.js';
-
-function sendPaymentRequestToApi(totalAmount, totalShipping) {
-  const result = Utils.calculateNumber('SUM', totalAmount, totalShipping);
-  console.log(`The total is: ${result}`);
-}
-
-export default sendPaymentRequestToApi;
+const Utils = {
+    calculateNumber(type, a, b) {
+      if (type === 'SUM') return Math.round(a) + Math.round(b);
+      if (type === 'SUBTRACT') return Math.round(a) - Math.round(b);
+      if (type === 'DIVIDE') return Math.round(b) !== 0 ? Math.round(a) / Math.round(b) : 'Error';
+    }
+  };
+  
+  module.exports = Utils;
+  

@@ -5,9 +5,9 @@
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {
-    "chai": "^4.3.4",
-    "mocha": "^10.2.0",
-    "sinon": "^15.0.0"
+  "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^11.1.0",
+    "sinon": "^20.0.0"
   }
 }
