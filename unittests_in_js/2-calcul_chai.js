@@ -1,5 +1,5 @@
-// 2-calcul_chai.js
-export default function calculateNumber(type, a, b) {
+// 2-calcul_chai.js (CommonJS version)
+function calculateNumber(type, a, b) {
 	const numA = Number(a);
 	const numB = Number(b);
   
@@ -20,4 +20,6 @@ export default function calculateNumber(type, a, b) {
 	  throw new TypeError('Invalid operation type');
 	}
   }
+  
+  module.exports = calculateNumber;  // Use module.exports instead of export default
   

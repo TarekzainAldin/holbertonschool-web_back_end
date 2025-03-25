@@ -1,6 +1,6 @@
-// 2-calcul_chai.test.js
-import calculateNumber from './2-calcul_chai.js';  // Use import instead of require
-import { expect } from 'chai';
+// 2-calcul_chai.test.js (CommonJS version)
+const calculateNumber = require('./2-calcul_chai.js');  // Use require instead of import
+const { expect } = require('chai');  // Use require for chai
 
 describe('calculateNumber', () => {
     it('returns rounded sum with SUM', () => {
