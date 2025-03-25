@@ -1,20 +1,16 @@
-function calculateNumber(type, a, b)
-{
-	number_1 = Math.round(a)
-	number_2 = Math.round(b)
-	if (type == "SUM") {
-		return ((number_1 + number_2));
-}
-	if (type == "SUBTRACT") {
-		return ((number_1 - number_2));
-}
-	if (type == "DIVIDE") {
-		if (number_2 == 0) {
-			return "Error"
-		}
-		return ((number_1 / number_2));
-}
-
-}
-
-module.exports = calculateNumber;
+export default function calculateNumber(type, a, b) {
+	const numA = Math.round(a);
+	const numB = Math.round(b);
+  
+	if (type === "SUM") {
+	  return numA + numB;
+	} else if (type === "SUBTRACT") {
+	  return numA - numB;
+	} else if (type === "DIVIDE") {
+	  if (numB === 0) return "Error";
+	  return numA / numB;
+	} else {
+	  throw new Error("Invalid operation type");
+	}
+  }
+  
