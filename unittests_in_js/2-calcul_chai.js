@@ -1,20 +1,19 @@
-function calculateNumber(type, a, b)
-{
-	number_1 = Math.round(a)
-	number_2 = Math.round(b)
-	if (type == "SUM") {
-		return ((number_1 + number_2));
-}
-	if (type == "SUBTRACT") {
-		return ((number_1 - number_2));
-}
-	if (type == "DIVIDE") {
-		if (number_2 == 0) {
-			return "Error"
-		}
-		return ((number_1 / number_2));
-}
-
-}
-
-module.exports = calculateNumber;
+// 2-calcul_chai.js
+export function calculateNumber(type, a, b) {
+	let aRounded = Math.round(a);
+	let bRounded = Math.round(b);
+  
+	if (type === "SUM") {
+	  return aRounded + bRounded;
+	}
+	if (type === "SUBTRACT") {
+	  return aRounded - bRounded;
+	}
+	if (type === "DIVIDE") {
+	  if (bRounded === 0) {
+		return "Error";
+	  }
+	  return aRounded / bRounded;
+	}
+  }
+  
