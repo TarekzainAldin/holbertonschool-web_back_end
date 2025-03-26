@@ -2,25 +2,24 @@ const request = require('request');
 const { expect } = require('chai');
 
 describe('Index page', () => {
-  const baseUrl = 'http://localhost:7865';
+  const BASE_URL = 'http://localhost:7865';
 
-  it('should return correct status code', (done) => {
-    request.get(baseUrl, (err, res) => {
+  it('should return status code 200', (done) => {
+    request.get(BASE_URL, (err, res) => {
       expect(res.statusCode).to.equal(200);
-      done();
+      done(err);
     });
   });
 
   it('should return correct result', (done) => {
-    request.get(baseUrl, (err, res, body) => {
+    request.get(BASE_URL, (err, res, body) => {
       expect(body).to.equal('Welcome to the payment system');
-      done();
+      done(err);
     });
   });
 
-  it('should log API available message when server starts', () => {
-    // This test assumes the server is already running
-    // and showing the correct startup message
+  it('should log API available message', () => {
+    // This test assumes the server is running and logged the message
     expect(true).to.be.true; // Placeholder assertion
   });
 });
